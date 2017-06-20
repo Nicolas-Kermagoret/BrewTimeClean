@@ -15,6 +15,7 @@ public class BeerViewModel implements BeerBaseViewModel {
     private String name;
     private String type;
     private String quantity;
+    private String iconPath;
 
     private String brewDate;
     private String secondFermentationDate;
@@ -29,6 +30,7 @@ public class BeerViewModel implements BeerBaseViewModel {
         this.name = beer.getName();
         this.type = beer.getType();
         this.quantity = Integer.toString(beer.getQuantity()) +"L";
+        this.iconPath = "beer_icon_"+ this.type.toLowerCase();
         this.brewDate = beer.getBrewDate();
         this.secondFermentationDate = beer.getSecondFermentationDate();
         this.gardeDate = beer.getGardeDate();
@@ -52,6 +54,10 @@ public class BeerViewModel implements BeerBaseViewModel {
 
     public String getQuantity() {
         return quantity;
+    }
+
+    public String getIconPath() {
+        return iconPath;
     }
 
     public String getBrewDate() {

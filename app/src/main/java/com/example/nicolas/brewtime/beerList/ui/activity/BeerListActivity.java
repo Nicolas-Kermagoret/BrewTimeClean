@@ -2,6 +2,8 @@ package com.example.nicolas.brewtime.beerList.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.nicolas.brewtime.R;
@@ -10,9 +12,11 @@ import com.example.nicolas.brewtime.beerList.presenter.base.BaseListPresenter;
 import com.example.nicolas.brewtime.beerList.repository.BeerRepository;
 import com.example.nicolas.brewtime.beerList.repository.base.BeerBaseRepository;
 import com.example.nicolas.brewtime.beerList.ui.view.BaseListView;
+import com.example.nicolas.brewtime.beerList.ui.view.BeerListAdapter;
 import com.example.nicolas.brewtime.beerList.ui.viewmodel.base.BeerBaseViewModel;
 import com.example.nicolas.brewtime.beerList.usecase.GetBeerListUseCase;
 import com.example.nicolas.brewtime.beerList.usecase.base.GetBeerListBaseUseCase;
+import com.example.nicolas.brewtime.common.view.SimpleDividerItemDecoration;
 
 import java.util.List;
 
@@ -20,7 +24,9 @@ public class BeerListActivity extends AppCompatActivity implements BaseListView{
 
     private static final String TAG = BeerListActivity.class.getName();
 
-    BaseListPresenter presenter;
+    private BaseListPresenter presenter;
+    private BeerListAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,12 @@ public class BeerListActivity extends AppCompatActivity implements BaseListView{
         final GetBeerListBaseUseCase useCase = new GetBeerListUseCase(repository);
         this.presenter = new BeerListPresenter(useCase, this);
         this.presenter.onViewAttached(this);
+
+        this.recyclerView = (RecyclerView) this.findViewById(R.id.recycler_view_beer_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getApplicationContext());
+        this.recyclerView.setLayoutManager(layoutManager);
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         this.presenter.getBeers();
 
@@ -135,7 +147,8 @@ public class BeerListActivity extends AppCompatActivity implements BaseListView{
 
     @Override
     public void setResponse(List<BeerBaseViewModel> beerBaseViewModels) {
-        Log.d(TAG, "setResponse: ");
+        this.adapter = new BeerListAdapter(beerBaseViewModels);
+        this.recyclerView.setAdapter(adapter);
     }
 
     @Override

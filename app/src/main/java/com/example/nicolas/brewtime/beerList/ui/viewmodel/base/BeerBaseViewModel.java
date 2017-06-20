@@ -10,6 +10,8 @@ public interface BeerBaseViewModel {
 
     String getQuantity();
 
+    String getIconPath();
+
     String getBrewDate();
 
     String getSecondFermentationDate();
