@@ -12,16 +12,17 @@ import com.example.nicolas.brewtime.R;
 import com.example.nicolas.brewtime.beerList.ui.viewmodel.base.BeerBaseViewModel;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.List;
 
 public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.ViewHolder> {
 
-    List<BeerBaseViewModel> beerList;
-    Context context;
+    private List<BeerBaseViewModel> beerList;
+    private Context context;
+    private BeerListItemListener listener;
 
-    public BeerListAdapter(List<BeerBaseViewModel> beerList) {
+    public BeerListAdapter(List<BeerBaseViewModel> beerList, BeerListItemListener listener) {
         this.beerList = beerList;
+        this.listener = listener;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.beerName.setText(beerList.get(position).getName());
         holder.beerDate.setText(beerList.get(position).getBrewDate());
         Picasso.with(context)
@@ -41,6 +42,12 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.ViewHo
                 .fit()
                 .centerCrop()
                 .into(holder.beerIcon);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.itemClicked(position);
+            }
+        });
     }
 
     @Override
@@ -61,4 +68,9 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.ViewHo
             beerIcon = (ImageView) itemView.findViewById(R.id.beer_icon_list);
         }
     }
+
+    public interface BeerListItemListener {
+        void itemClicked(int position);
+    }
+
 }

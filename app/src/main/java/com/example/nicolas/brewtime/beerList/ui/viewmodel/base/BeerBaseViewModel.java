@@ -1,8 +1,9 @@
 package com.example.nicolas.brewtime.beerList.ui.viewmodel.base;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface BeerBaseViewModel {
+public interface BeerBaseViewModel extends Serializable{
 
     String getName();
 

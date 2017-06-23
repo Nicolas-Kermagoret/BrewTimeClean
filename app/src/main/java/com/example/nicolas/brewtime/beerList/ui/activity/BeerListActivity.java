@@ -1,10 +1,10 @@
 package com.example.nicolas.brewtime.beerList.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.example.nicolas.brewtime.R;
 import com.example.nicolas.brewtime.beerList.presenter.BeerListPresenter;
@@ -16,17 +16,21 @@ import com.example.nicolas.brewtime.beerList.ui.view.BeerListAdapter;
 import com.example.nicolas.brewtime.beerList.ui.viewmodel.base.BeerBaseViewModel;
 import com.example.nicolas.brewtime.beerList.usecase.GetBeerListUseCase;
 import com.example.nicolas.brewtime.beerList.usecase.base.GetBeerListBaseUseCase;
+import com.example.nicolas.brewtime.beerdetails.ui.activity.BeerDetailsActivity;
 import com.example.nicolas.brewtime.common.view.SimpleDividerItemDecoration;
 
 import java.util.List;
 
-public class BeerListActivity extends AppCompatActivity implements BaseListView{
+public class BeerListActivity extends AppCompatActivity implements BaseListView, BeerListAdapter.BeerListItemListener {
 
     private static final String TAG = BeerListActivity.class.getName();
+    public static final String BEER_EXTRA = "beer_extra";
 
     private BaseListPresenter presenter;
     private BeerListAdapter adapter;
     private RecyclerView recyclerView;
+
+    private List<BeerBaseViewModel> beerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +151,8 @@ public class BeerListActivity extends AppCompatActivity implements BaseListView{
 
     @Override
     public void setResponse(List<BeerBaseViewModel> beerBaseViewModels) {
-        this.adapter = new BeerListAdapter(beerBaseViewModels);
+        this.adapter = new BeerListAdapter(beerBaseViewModels, this);
+        this.beerList = beerBaseViewModels;
         this.recyclerView.setAdapter(adapter);
     }
 
@@ -164,5 +169,12 @@ public class BeerListActivity extends AppCompatActivity implements BaseListView{
     @Override
     public void setEmptyResponse() {
 
+    }
+
+    @Override
+    public void itemClicked(int position) {
+        Intent intent = new Intent(this, BeerDetailsActivity.class);
+        intent.putExtra(this.BEER_EXTRA, beerList.get(position));
+        startActivity(intent);
     }
 }
