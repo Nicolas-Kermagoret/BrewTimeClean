@@ -3,4 +3,15 @@
     <string name="beer_name">Beer Name</string>
     <string name="beer_date_default">01/01/1970</string>
     <string name="beer_name_default">Beer Name</string>
+    <string name="beer_type">Type :</string>
+    <string name="beer_quantity">Quantité :</string>
+    <string name="beer_date_brewing">Brassage :</string>
+    <string name="beer_date_second">Fermentation secondaire :</string>
+    <string name="beer_date_garde">Garde :</string>
+    <string name="beer_date_bottling">Mise en bouteilles :</string>
+    <string name="beer_date_drinking">Degustation :</string>
+
+    <string name="info_card_title">Infos générales</string>
+    <string name="dates_card_title">Dates</string>
+
 </resources>
